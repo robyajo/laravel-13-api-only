@@ -1,9 +1,14 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "robyajo/laravel-13-api-only",
+    "name": "robyajo/laravel13-api-only",
     "type": "project",
     "description": "A Laravel API-only starter kit with Sanctum token authentication, account management, and OpenAPI docs.",
-    "keywords": ["laravel", "api", "starter-kit", "sanctum"],
+    "keywords": [
+        "laravel",
+        "api",
+        "starter-kit",
+        "sanctum"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.3",

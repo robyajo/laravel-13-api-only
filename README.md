@@ -21,7 +21,7 @@ vibe-coding, but LLM did all the implementation work.
 ## Installation
 
 ```bash
-laravel new my-app --using=laraveldaily/api-starter-kit
+laravel new my-app --using=robyajo/laravel13-api-only
 ```
 
 The installer asks two questions:
@@ -36,7 +36,7 @@ The installer asks two questions:
 Or with Composer directly (no prompts at all):
 
 ```bash
-composer create-project laraveldaily/api-starter-kit my-app
+composer create-project robyajo/laravel13-api-only my-app
 ```
 
 Either way you get a generated `APP_KEY`, an SQLite database, and migrated
@@ -54,20 +54,20 @@ The mailer defaults to `MAIL_MAILER=log`, so password reset codes land in
 All routes live under `/api/v1`. Authenticated routes expect an
 `Authorization: Bearer <token>` header. All responses (including errors) are JSON.
 
-| Method | Path | Auth | Purpose |
-|---|---|---|---|
-| POST | `/api/v1/register` | – | Create an account, receive a token |
-| POST | `/api/v1/login` | – | Issue a token for valid credentials |
-| POST | `/api/v1/forgot-password` | – | Email a 6-digit reset code |
-| POST | `/api/v1/reset-password` | – | Set a new password using the code |
-| POST | `/api/v1/logout` | ✓ | Revoke the current token |
-| GET | `/api/v1/user` | ✓ | Get the authenticated user |
-| PUT | `/api/v1/user` | ✓ | Update name and/or email |
-| PUT | `/api/v1/user/password` | ✓ | Change password (revokes other tokens) |
-| DELETE | `/api/v1/user` | ✓ | Delete the account (password confirmed) |
-| GET | `/api/v1/tokens` | ✓ | List active tokens |
-| DELETE | `/api/v1/tokens/{id}` | ✓ | Revoke one token |
-| DELETE | `/api/v1/tokens` | ✓ | Revoke all tokens except the current one |
+| Method | Path                      | Auth | Purpose                                  |
+| ------ | ------------------------- | ---- | ---------------------------------------- |
+| POST   | `/api/v1/register`        | –    | Create an account, receive a token       |
+| POST   | `/api/v1/login`           | –    | Issue a token for valid credentials      |
+| POST   | `/api/v1/forgot-password` | –    | Email a 6-digit reset code               |
+| POST   | `/api/v1/reset-password`  | –    | Set a new password using the code        |
+| POST   | `/api/v1/logout`          | ✓    | Revoke the current token                 |
+| GET    | `/api/v1/user`            | ✓    | Get the authenticated user               |
+| PUT    | `/api/v1/user`            | ✓    | Update name and/or email                 |
+| PUT    | `/api/v1/user/password`   | ✓    | Change password (revokes other tokens)   |
+| DELETE | `/api/v1/user`            | ✓    | Delete the account (password confirmed)  |
+| GET    | `/api/v1/tokens`          | ✓    | List active tokens                       |
+| DELETE | `/api/v1/tokens/{id}`     | ✓    | Revoke one token                         |
+| DELETE | `/api/v1/tokens`          | ✓    | Revoke all tokens except the current one |
 
 ### Register
 
@@ -87,15 +87,15 @@ curl -X POST http://localhost:8000/api/v1/register \
 
 ```json
 {
-  "token": "1|x6tLxhBuYDQwGesgZQGMqLpdo1Wt8h9dLn1to2hX",
-  "token_type": "Bearer",
-  "user": {
-    "id": 1,
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "created_at": "2026-06-11T12:00:00.000000Z",
-    "updated_at": "2026-06-11T12:00:00.000000Z"
-  }
+    "token": "1|x6tLxhBuYDQwGesgZQGMqLpdo1Wt8h9dLn1to2hX",
+    "token_type": "Bearer",
+    "user": {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2026-06-11T12:00:00.000000Z",
+        "updated_at": "2026-06-11T12:00:00.000000Z"
+    }
 }
 ```
 
@@ -162,7 +162,10 @@ the user holds. A missing, expired, or wrong code always returns the same
 generic `422`:
 
 ```json
-{ "message": "...", "errors": { "code": ["The reset code is invalid or has expired."] } }
+{
+    "message": "...",
+    "errors": { "code": ["The reset code is invalid or has expired."] }
+}
 ```
 
 > **Brute-force note:** the 6-digit code is protected by throttling (5 requests
@@ -179,13 +182,13 @@ curl http://localhost:8000/api/v1/user \
 
 ```json
 {
-  "data": {
-    "id": 1,
-    "name": "Jane Doe",
-    "email": "jane@example.com",
-    "created_at": "2026-06-11T12:00:00.000000Z",
-    "updated_at": "2026-06-11T12:00:00.000000Z"
-  }
+    "data": {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2026-06-11T12:00:00.000000Z",
+        "updated_at": "2026-06-11T12:00:00.000000Z"
+    }
 }
 ```
 
@@ -243,15 +246,15 @@ curl http://localhost:8000/api/v1/tokens \
 
 ```json
 {
-  "data": [
-    {
-      "id": 2,
-      "name": "iphone-15",
-      "abilities": ["*"],
-      "last_used_at": "2026-06-11T12:34:56.000000Z",
-      "created_at": "2026-06-11T12:00:00.000000Z"
-    }
-  ]
+    "data": [
+        {
+            "id": 2,
+            "name": "iphone-15",
+            "abilities": ["*"],
+            "last_used_at": "2026-06-11T12:34:56.000000Z",
+            "created_at": "2026-06-11T12:00:00.000000Z"
+        }
+    ]
 }
 ```
 
@@ -282,23 +285,23 @@ Returns `204 No Content`. Every token except the current one is revoked.
 
 All `/api/*` errors render as JSON:
 
-| Status | Body |
-|---|---|
-| 422 validation | `{ "message": "...", "errors": { "field": ["..."] } }` |
-| 401 unauthenticated | `{ "message": "Unauthenticated." }` |
-| 404 not found | `{ "message": "..." }` |
-| 429 throttled | `{ "message": "Too Many Attempts." }` + `Retry-After` header |
-| 500 | `{ "message": "Server Error." }` (trace only with `APP_DEBUG=true`) |
+| Status              | Body                                                                |
+| ------------------- | ------------------------------------------------------------------- |
+| 422 validation      | `{ "message": "...", "errors": { "field": ["..."] } }`              |
+| 401 unauthenticated | `{ "message": "Unauthenticated." }`                                 |
+| 404 not found       | `{ "message": "..." }`                                              |
+| 429 throttled       | `{ "message": "Too Many Attempts." }` + `Retry-After` header        |
+| 500                 | `{ "message": "Server Error." }` (trace only with `APP_DEBUG=true`) |
 
 ## Rate limiting
 
 Defined in `app/Providers/AppServiceProvider.php`:
 
-| Limiter | Limit | Applied to |
-|---|---|---|
-| `api` | 60/min per user (or IP) | everything else |
-| `login` | 5/min per email + IP | `/login` |
-| `password` | 5/min per email + IP | `/forgot-password`, `/reset-password` |
+| Limiter    | Limit                   | Applied to                            |
+| ---------- | ----------------------- | ------------------------------------- |
+| `api`      | 60/min per user (or IP) | everything else                       |
+| `login`    | 5/min per email + IP    | `/login`                              |
+| `password` | 5/min per email + IP    | `/forgot-password`, `/reset-password` |
 
 ## API documentation
 
