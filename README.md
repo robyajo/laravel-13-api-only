@@ -21,7 +21,7 @@ vibe-coding, but LLM did all the implementation work.
 ## Installation
 
 ```bash
-laravel new my-app --using=robyajo/laravel13-api-only
+laravel new my-app --using=robyajo/laravel-13-api-only
 ```
 
 The installer asks two questions:
@@ -36,7 +36,7 @@ The installer asks two questions:
 Or with Composer directly (no prompts at all):
 
 ```bash
-composer create-project robyajo/laravel13-api-only my-app
+composer create-project robyajo/laravel-13-api-only my-app
 ```
 
 Either way you get a generated `APP_KEY`, an SQLite database, and migrated
